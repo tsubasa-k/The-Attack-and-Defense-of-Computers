@@ -6,8 +6,9 @@
 因為前面有一個紅色的$這是shell的符號，所以可以直接執行Linux指令找到flag
 
 ### Result:
-![{7CBC37B5-679A-4DCF-929D-9D5DF006CB61}](https://hackmd.io/_uploads/BJf00DZx1x.png)
-![{B447CE4A-94AA-42D0-A836-3331C03FAB08}](https://hackmd.io/_uploads/BJrkkubl1x.png)
+<img width="524" height="305" alt="image" src="https://github.com/user-attachments/assets/6b35a5ba-d879-4c51-b8e7-1812a732c089" />
+<img width="597" height="198" alt="image" src="https://github.com/user-attachments/assets/bac3afe4-f50e-4d45-aefd-42d223560aa8" />
+
 
 ## helloworld_again
 
@@ -16,9 +17,11 @@
 1. 輸入字串不可大於48bytes(`strlen(s) > 0x30`)
 2. 輸入字串必須是helloworld(`strcmp(s, "helloworld")`)
 
-![image](https://hackmd.io/_uploads/rk_PoHwM1x.png)
+<img width="802" height="876" alt="image" src="https://github.com/user-attachments/assets/4b9628e3-b9ed-4b11-ab6c-03d9ddac6525" />
 
-![image](https://hackmd.io/_uploads/rJSKoSDz1e.png)
+
+<img width="831" height="235" alt="image" src="https://github.com/user-attachments/assets/7794688b-c1be-4ff8-9047-78baa02fba0e" />
+
 ### Sol:
 因此我們的payload需要具備以下條件
 1. 包含'helloworld'字串
@@ -26,7 +29,9 @@
 3. 必須在buffer塞入48bytes的資料(引發overflow)再加上8bytes把caller的ebp覆蓋掉，最後還有我們想要return的位址
 
 透過objdump我們發現可以使用的address在0x40125b
-![image](https://hackmd.io/_uploads/B1ufp67Wkg.png)
+
+<img width="504" height="78" alt="image" src="https://github.com/user-attachments/assets/1f48f30b-6974-42da-baaa-90a168df6e80" />
+
 接續我們善用`\0`代表字串結尾的特性，設計了以下的payload：`b'helloworld\x00' + b'A'*0x25 + b'B'*8 + p64(helloworld)`
 透過`\x00`結束字串輸入，讓程式讀取時能判讀到helloworld字串以及字串長度不超過48bytes，後續透過A把剩餘的buffer填滿，B把caller的ebp覆蓋再加上我們想要return的位址p64(helloworld)
 ### Code:
@@ -48,18 +53,20 @@ p.sendline(payload)
 p.interactive()
 p.close()
 ```
-![image](https://hackmd.io/_uploads/SyupCLvM1e.png)
+<img width="576" height="324" alt="image" src="https://github.com/user-attachments/assets/c4add646-b159-4afe-9991-588a48753a18" />
+
 
 ### Result:
-![image](https://hackmd.io/_uploads/BJgYapze1g.png)
+<img width="577" height="420" alt="image" src="https://github.com/user-attachments/assets/f4a97044-fdca-4a4a-9538-787f6687ba99" />
 
-![image](https://hackmd.io/_uploads/Ski56pzg1x.png)
+<img width="577" height="199" alt="image" src="https://github.com/user-attachments/assets/6bc97a9b-b46a-4d81-bfab-8649e6ad1403" />
 
 
 ## shellcode
 
 ### Description:
-![image](https://hackmd.io/_uploads/B17uwKIb1x.png)
+<img width="477" height="391" alt="image" src="https://github.com/user-attachments/assets/ad88801e-7842-4fd5-9bd5-d0b5c3a4d410" />
+
 ### Sol:
 從程式碼可以看到在func拿到buf的記憶體位址後會直接執行，因此不用特別找能夠return的address只需要將shellcode注入到此buffer即可。
 
@@ -76,7 +83,8 @@ p.send(asm(shellcode))
 p.interactive()
 p.close()
 ```
-![image](https://hackmd.io/_uploads/rkGMkPDMkl.png)
+<img width="375" height="188" alt="image" src="https://github.com/user-attachments/assets/3bdfe5c6-9c11-486e-958f-7e405f4440d7" />
+
 * shellcraft.amd64.linux.sh(): pwnlib中提供可以執行bash的function
 * asm(): pwnlib中提供可以組譯與反組譯的function。
 ::: spoiler 關於 shellcraft.amd64.linux.sh()與asm()
@@ -117,7 +125,7 @@ jhH\xb8/bin///sPH\x89\xe7hri\x01\x01\x814$\x01\x01\x01\x011\xf6Vj\x08^H\x01\xe6V
 :::
 
 ### Result:
-![image](https://hackmd.io/_uploads/Sy03iTX-kx.png)
+<img width="528" height="593" alt="image" src="https://github.com/user-attachments/assets/4aab4a05-588c-4c27-917e-443b32cf5663" />
 
 
 ## shellcodeplus
@@ -126,7 +134,8 @@ jhH\xb8/bin///sPH\x89\xe7hri\x01\x01\x814$\x01\x01\x01\x011\xf6Vj\x08^H\x01\xe6V
 相比上一個程式shellcodeplus多了兩個保護機制
 1. buffer中不能有`0x90`這個字元(即NOP指令)
 2. buffer當中0,6,12,18,24,30,36,42,48,54必須是`0x0c`，1,7,13,19,25,31,37,43,49,55必須是`0x87`
-![image](https://hackmd.io/_uploads/BJX1utI-ye.png)
+<img width="621" height="663" alt="image" src="https://github.com/user-attachments/assets/cedea727-139b-423b-a767-a424dc2877f4" />
+
 
 ### Sol:
 根據以上的限制我們設計的payload如下：`b'\x0c\x87' + b'\x41\x41\x41\x41'`*10先建立好前面會被檢查的buffer，後續再加上pwnlib內建的shellcode機器碼即可
@@ -158,7 +167,7 @@ p.close()
 
 ### Result:
 
-![image](https://hackmd.io/_uploads/S1s-wYI-1x.png)
+<img width="469" height="610" alt="image" src="https://github.com/user-attachments/assets/f555b52d-24c7-48d2-8736-fae8cf3cfa65" />
 
 
 ## gadgethunter
@@ -194,28 +203,34 @@ int __fastcall main(int argc, const char **argv, const char **envp)
 4. 輸出內容：
 * 使用 `printf` 輸出使用者的輸入內容 (v8)，沒有格式化字串漏洞，但會顯示可能的溢出後內容。
 
-![image](https://hackmd.io/_uploads/S1f5wvPG1l.png)
+<img width="790" height="57" alt="image" src="https://github.com/user-attachments/assets/5201c836-e1cd-4503-85ee-8d81c0a38a16" />
+
 
 接著分析要如何使用Gadget執行```execve("/bin/sh", NULL, NULL)```
 
 ROPgadget 會幫我們選出所有以 pop 開頭 ret 結束的 Gadget 位址
 接著再透過 grep 選擇我們需要的暫存器，結果如下：
-![image](https://hackmd.io/_uploads/rym-pDPMyg.png)
+
+<img width="667" height="187" alt="image" src="https://github.com/user-attachments/assets/54cca043-28db-4634-b2ae-887fa0e23087" />
+
 可以注意到 pop rdx 後面還會接一個 pop rbx
 我們不需要用到也不影響到其他 Gadget 所以沒關係，隨便填入一個值就好
 
 使用以下命令找syscall的address
-![image](https://hackmd.io/_uploads/r1p0TPPGkl.png)
+
+<img width="492" height="112" alt="image" src="https://github.com/user-attachments/assets/384690c8-5c78-4c83-9b64-e6c8cf512224" />
 
 這個執行檔中沒有記憶體位子是存在/bin/sh的 所以自己寫入一塊 然後再把這一塊拿來用
-![image](https://hackmd.io/_uploads/S1DgRDwMyg.png)
+
+<img width="511" height="93" alt="image" src="https://github.com/user-attachments/assets/126ea90c-2fb2-462f-8998-ec730e6f2cc1" />
 
 所以用pwndbg裡的vmmap 查可以寫入的address(這裡選擇寫入0x4C9000)
-![image](https://hackmd.io/_uploads/r1QJeuDz1g.png)
+
+<img width="673" height="208" alt="image" src="https://github.com/user-attachments/assets/fb4fc24b-f237-4a26-a3c3-c5fb3b8086b2" />
 
 用ROPgadgets找到 mov qword ptr [rsi], rax; ret的address
-![image](https://hackmd.io/_uploads/Sy7DKdwG1x.png)
 
+<img width="751" height="133" alt="image" src="https://github.com/user-attachments/assets/b40ae0d0-480d-4d4d-a42e-e395cc7c61dc" />
 
 利用 mov qword ptr [rsi], rax; ret 
 把 rax 裡面的字串 "/bin/sh\x00" 寫入到 rsi 裡面的地址(0x4C9000)
@@ -238,8 +253,9 @@ mov 是一個 ROP gadget，其作用是將 rax 寫入 rsi 所指定的地址。�
 
 system call number會放入rax
 
-![image](https://hackmd.io/_uploads/Syk_QFvM1x.png)
-![image](https://hackmd.io/_uploads/BkDyHaOG1x.png)
+<img width="1399" height="136" alt="image" src="https://github.com/user-attachments/assets/8da9340c-2fcf-4e69-8f7e-d84be3f17d86" />
+
+<img width="1522" height="1006" alt="image" src="https://github.com/user-attachments/assets/55919e50-01d6-4832-aeea-d0d79888fb4b" />
 
 
 ### Code:
@@ -278,8 +294,7 @@ p.close()
 
 ### Result:
 
-![image](https://hackmd.io/_uploads/B1l8KkIMyl.png)
-
+<img width="507" height="627" alt="image" src="https://github.com/user-attachments/assets/799043bc-c05c-439e-a687-b1b500ba13be" />
 
 
 ## doors
@@ -288,12 +303,15 @@ p.close()
 
 用checksec查這題的保護機制
 
-![image](https://hackmd.io/_uploads/B1ssL8DMJx.png)
+<img width="316" height="169" alt="image" src="https://github.com/user-attachments/assets/befb0e71-fa26-40d3-ba69-2ab407da96b1" />
+
 
 發現沒有開啟PIE，執行的位址就不會變化
 
 用file doors這個指令
-![image](https://hackmd.io/_uploads/Skirmxtfyl.png)
+
+<img width="777" height="57" alt="image" src="https://github.com/user-attachments/assets/5e43d03e-ca91-407d-bb24-1137b926042c" />
+
 
 可以看到上面寫說這程式是動態連結，意思就是說使用的外部函式會是程式開始執行時才載入進來，也就是說他需要去解析外部函式的位置
 
@@ -304,10 +322,14 @@ GOT 是一個 function pointer array 用來儲存外部 function 位置
 
 用IDA開啟程式
 main:
-![image](https://hackmd.io/_uploads/SyUHwLwMkl.png)
+
+<img width="1296" height="375" alt="image" src="https://github.com/user-attachments/assets/2766263a-b144-4cf4-b4b4-a02ed828bcdd" />
+
 
 後門程式:
-![image](https://hackmd.io/_uploads/rkbOwIPGJl.png)
+
+<img width="555" height="136" alt="image" src="https://github.com/user-attachments/assets/02905a29-f951-45bd-aea2-562a5c685e86" />
+
 
 觀察一下使用者的兩個輸入，可以發現第一個輸入可以讓第二個輸入任意寫
 
@@ -315,21 +337,21 @@ main:
 
 所以說第二輸入的內容，假設輸入10，他會變成0xA存在doors+24這個位址
 
+<img width="835" height="520" alt="image" src="https://github.com/user-attachments/assets/c39ab655-37ee-4eb7-bf47-91001b797072" />
 
-![image](https://hackmd.io/_uploads/rkOVwGtG1l.png)
-
-
-![image](https://hackmd.io/_uploads/rJZHwGKMJe.png)
+<img width="815" height="193" alt="image" src="https://github.com/user-attachments/assets/b6663ca3-8300-476f-b21d-0c81b97194d7" />
 
 
 puts@GLIBC就是GOT位址
 
-![image](https://hackmd.io/_uploads/SkRqQGYG1e.png)
+<img width="826" height="94" alt="image" src="https://github.com/user-attachments/assets/d49f1626-07a0-4fe8-aca7-cbd4d81500ba" />
+
 
 當main呼叫 puts 的時候，他會跳到這個 puts@plt 的這個位置
 plt的位址處於紅色這段，但我們發現0x404018是可以寫的
 
-![image](https://hackmd.io/_uploads/rJ9Xi-YM1g.png)
+<img width="640" height="150" alt="image" src="https://github.com/user-attachments/assets/85b56d67-159f-43d1-9e87-4f15b3f3457f" />
+
 
 
 所以我們發現可以透過改變puts 的GOT(Global Offset Table)來達成 GOT-Hijacking 然後跳到 treasure，以劫持程式執行流程並觸發任意程式碼執行，觸發RCE(Remote Code Execution)。
@@ -381,7 +403,7 @@ p.close()
 ```
 
 ### Result:
-![image](https://hackmd.io/_uploads/BkOkYkUGJl.png)
+<img width="492" height="727" alt="image" src="https://github.com/user-attachments/assets/0e073774-3166-423d-aabb-a1fe1b3522f7" />
 
 
 doors 解法說明:
