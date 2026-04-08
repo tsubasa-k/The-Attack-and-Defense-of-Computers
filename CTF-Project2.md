@@ -151,8 +151,6 @@ while True:
 
 分別對兩者進行base64解密後得到了以下資訊
 
-<img width="381" height="448" alt="image" src="https://github.com/user-attachments/assets/7e1df341-5358-4447-836d-5b4669641651" />
-
 <img width="381" height="448" alt="image" src="https://github.com/user-attachments/assets/e06f4baf-1f07-42cf-af77-e8ebeeb70c13" />
 
 <img width="622" height="443" alt="image" src="https://github.com/user-attachments/assets/6cf95e68-725d-4302-840b-6280bc67fbf1" />
