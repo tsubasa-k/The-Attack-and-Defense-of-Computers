@@ -153,6 +153,8 @@ while True:
 
 <img width="381" height="448" alt="image" src="https://github.com/user-attachments/assets/e06f4baf-1f07-42cf-af77-e8ebeeb70c13" />
 
+
+
 <img width="622" height="443" alt="image" src="https://github.com/user-attachments/assets/6cf95e68-725d-4302-840b-6280bc67fbf1" />
 
 
@@ -304,6 +306,8 @@ print("Password cracking completed.")
 因為在破解當中發現伺服器每隔一段時間(一定量的request？)就會timeout使得破解無法繼續，所以使用了`try except`的方式如果抓到`Timeout`就休息一段時間在繼續。
 
 <img width="314" height="137" alt="image" src="https://github.com/user-attachments/assets/e50a4868-70c9-4720-8e14-09c757e1f8dc" />
+
+
 
 <img width="189" height="528" alt="image" src="https://github.com/user-attachments/assets/c64b64ff-15fc-4344-9a19-8bdcd00a933b" />
 
